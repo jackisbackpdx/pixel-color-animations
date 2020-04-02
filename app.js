@@ -156,25 +156,73 @@ button.addEventListener('click', function() {
     }
 });
 
+let right;
+let selected = false;
 function animateRight() {
+    let endPieces = [];
     for(let a = 0; a < lengthAndWidth; a++) {
-        for(let b = lengthAndWidth - 1; b > 0; b--) {
+        for(let b = lengthAndWidth - 1; b > -1; b--) {
             if(b === lengthAndWidth - 1) {
-                pixelStorage[a][0].style.backgroundColor = pixelStorage[a][b].style.backgroundColor;
+                let lastPiece = pixelStorage[a][b].style.backgroundColor;
+                endPieces.push(lastPiece);
             }
-            if(b > 1) {
+            if(b > 0) {
                 pixelStorage[a][b].style.backgroundColor = pixelStorage[a][b - 1].style.backgroundColor;
             }
+            if(b === 0) {
+                pixelStorage[a][0].style.backgroundColor = endPieces[a];
+            }
         }
-        pixelStorage[a][1].style.backgroundColor = pixelStorage[a][0].style.backgroundColor;
+
     }
-    setTimeout(animateRight, 200);
+    right = setTimeout(animateRight, 200);
 }
+
+const animateDivs = document.getElementsByClassName('quarter-circle');
+
+function resetAnimationButtons(currentDiv) {
+    for(let i = 0; i < animateDivs.length; i++) {
+        if(i !== currentDiv) {
+            animateDivs[i].style.backgroundColor = 'blue';
+        }
+    }
+} 
+
+animateDivs[0].addEventListener('click', function() {
+    this.style.backgroundColor = 'green';
+    resetAnimationButtons(0);
+});
+animateDivs[1].addEventListener('click', function() {
+    this.style.backgroundColor = 'green';
+    resetAnimationButtons(1);
+});
+animateDivs[2].addEventListener('click', function() {
+    if(selected === false) {
+        animateRight();
+        selected = true;
+    }
+    this.style.backgroundColor = 'green';
+    resetAnimationButtons(2);
+});
+animateDivs[3].addEventListener('click', function() {
+    this.style.backgroundColor = 'green';
+    resetAnimationButtons(3);
+});
+
+colorChoice.parentElement.addEventListener('click', function(e) {
+    if(e.target !== input) {
+        colorChoice.style.display = 'none';
+    } else {
+        colorChoice.style.display = 'initial';
+    }
+});
 
 const animateOption = document.querySelectorAll('div input');
-
-for(let i = 0; i < animateOption.length; i++) {
-    animateOption[i].addEventListener('click', function() {
-        animateRight();
-    });
-}
+    
+animateOption[0].addEventListener('click', function() {
+    clearTimeout(right);
+    for(let i = 0; i < animateDivs.length; i++) {
+        animateDivs[i].style.backgroundColor = 'blue';
+    }
+    selected = false;
+});
