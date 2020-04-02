@@ -211,3 +211,8 @@ a {
     top: 320px;
 }
 
+.animate-text {
+    position: absolute;
+    top: 200px;
+    left: 620px;
+}
