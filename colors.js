@@ -15,7 +15,6 @@ let colors = {
     'Cerulean': '007BA7',
     'Electric blue': '7DF9FF',
     'Cyan': '00FFFF',
-    
     'Olive': '808000',
     'Viridian': '40826d',
     'Emerald': '50C878',

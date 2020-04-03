@@ -11,7 +11,7 @@ let chosenColor;
 let lengthAndWidth;
 
 console.log(Math.sqrt(200));
-for(let i = 0; i < 2500; i++) {
+for(let i = 0; i < 3600; i++) {
     let pixel = document.createElement('div');
     pixel.classList = 'pixel';
 
@@ -46,11 +46,11 @@ sizeChange.addEventListener('change', function() {
         sizeOfPixels = 18;
     }
     if(sizeChange.value === '3') {
-        numberOfPixels = 1600;
+        numberOfPixels = 2150;
         sizeOfPixels = 13;
     }
     if(sizeChange.value === '4') {
-        numberOfPixels = 2500;
+        numberOfPixels = 3600;
         sizeOfPixels = 10;
     }
 
@@ -175,8 +175,29 @@ function animateRight() {
         }
 
     }
-    right = setTimeout(animateRight, 200);
+    // right = setTimeout(animateRight, 200);
+    right = requestAnimationFrame(animateRight);
 }
+// function animateLeft() {
+//     let endPieces = [];
+//     for(let a = 0; a < lengthAndWidth; a++) {
+//         for(let b = lengthAndWidth - 1; b > -1; b--) {
+//             if(b === lengthAndWidth - 1) {
+//                 let lastPiece = pixelStorage[a][b].style.backgroundColor;
+//                 endPieces.push(lastPiece);
+//             }
+//             if(b > 0) {
+//                 pixelStorage[a][b].style.backgroundColor = pixelStorage[a][b - 1].style.backgroundColor;
+//             }
+//             if(b === 0) {
+//                 pixelStorage[a][0].style.backgroundColor = endPieces[a];
+//             }
+//         }
+
+//     }
+//     // right = setTimeout(animateRight, 200);
+//     right = requestAnimationFrame(animateRight);
+// }
 
 const animateDivs = document.getElementsByClassName('quarter-circle');
 
@@ -217,10 +238,9 @@ colorChoice.parentElement.addEventListener('click', function(e) {
     }
 });
 
-const animateOption = document.querySelectorAll('div input');
-    
-animateOption[0].addEventListener('click', function() {
-    clearTimeout(right);
+const puase = document.getElementById('pause');
+puase.addEventListener('click', function() {
+    cancelAnimationFrame(right);
     for(let i = 0; i < animateDivs.length; i++) {
         animateDivs[i].style.backgroundColor = 'blue';
     }
