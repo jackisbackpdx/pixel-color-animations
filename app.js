@@ -1,4 +1,7 @@
 import colors from './colors.js';
+import createPixels from './create-pixels.js';
+import changeSize from './change-size.js';
+
 const grid = document.querySelector('main');
 const input = document.getElementById('color');
 const colorChoice = document.querySelector('colors');
@@ -8,74 +11,23 @@ const sizeChange = document.querySelector('select');
 
 let pixelStorage = [];
 let chosenColor;
-let lengthAndWidth;
 
-console.log(Math.sqrt(200));
-for(let i = 0; i < 2500; i++) {
-    let pixel = document.createElement('div');
-    pixel.classList = 'pixel';
+let lengthAndWidth = createPixels(grid, chosenColor);
 
-    pixel.style.backgroundColor = 'white';
-    pixel.addEventListener('click', function() {
-        pixel.style.backgroundColor = chosenColor;
-    });
-    pixel.addEventListener('dragover', function() {
-        pixel.style.backgroundColor = chosenColor;
-    });
+// lengthAndWidth = changeSize(sizeChange, grid, pixels, chosenColor);
 
-    grid.appendChild(pixel);
-
-    lengthAndWidth = Math.sqrt(pixels.length);
-}
-
-sizeChange.addEventListener('change', function() {
-    let numberOfPixels;
-    let sizeOfPixels;
-
+function paintPixels(pixels) {
     for(let i = 0; i < pixels.length; i++) {
-        grid.removeChild(pixels[i]);
-        i--;
-    }
-
-    if(sizeChange.value === '1') {
-        numberOfPixels = 400;
-        sizeOfPixels = 28;
-    } 
-    if(sizeChange.value === '2') {
-        numberOfPixels = 900;
-        sizeOfPixels = 18;
-    }
-    if(sizeChange.value === '3') {
-        numberOfPixels = 1600;
-        sizeOfPixels = 13;
-    }
-    if(sizeChange.value === '4') {
-        numberOfPixels = 2500;
-        sizeOfPixels = 10;
-    }
-
-    for(let i = 0; i < numberOfPixels; i++) {
-        let pixel = document.createElement('div');
-        pixel.classList = 'pixel';
-        pixel.style.height = sizeOfPixels + 'px';
-        pixel.style.width = sizeOfPixels + 'px';
-    
+        let pixel = pixels[i];
         pixel.addEventListener('click', function() {
             pixel.style.backgroundColor = chosenColor;
         });
         pixel.addEventListener('dragover', function() {
             pixel.style.backgroundColor = chosenColor;
         });
-    
-        grid.appendChild(pixel);
-    
     }
-    lengthAndWidth = Math.sqrt(pixels.length);
-    rowsAndColumns();
-    console.log(lengthAndWidth);
-});
-
-
+}
+paintPixels(pixels);
 
 function rowsAndColumns() {
     pixelStorage = [];
@@ -175,8 +127,10 @@ function animateRight() {
         }
 
     }
-    right = setTimeout(animateRight, 200);
+    // right = setTimeout(animateRight, 200);
+    right = requestAnimationFrame(animateRight);
 }
+
 
 const animateDivs = document.getElementsByClassName('quarter-circle');
 
@@ -217,10 +171,9 @@ colorChoice.parentElement.addEventListener('click', function(e) {
     }
 });
 
-const animateOption = document.querySelectorAll('div input');
-    
-animateOption[0].addEventListener('click', function() {
-    clearTimeout(right);
+const puase = document.getElementById('pause');
+puase.addEventListener('click', function() {
+    cancelAnimationFrame(right);
     for(let i = 0; i < animateDivs.length; i++) {
         animateDivs[i].style.backgroundColor = 'blue';
     }
